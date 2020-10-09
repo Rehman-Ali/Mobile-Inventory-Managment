@@ -61,7 +61,7 @@ export function DrawerContent(props) {
                             icon={() => (
                                 <Icon 
                                 name="home-outline" 
-                                color="red"
+                                color="#2a62ff"
                                 size={24}
                                 />
                             )}
@@ -72,7 +72,7 @@ export function DrawerContent(props) {
                             icon={() => (
                                 <Icon 
                                 name="account-outline" 
-                                color="red"
+                                color="#2a62ff"
                                 size={24}
                                 />
                             )}
@@ -83,7 +83,7 @@ export function DrawerContent(props) {
                             icon={() => (
                                 <Icon 
                                 name="bookmark-outline" 
-                                color="red"
+                                color="#2a62ff"
                                 size={24}
                                 />
                             )}
@@ -105,7 +105,7 @@ export function DrawerContent(props) {
                             icon={() => (
                                 <Icon 
                                 name="account-check-outline" 
-                                color="red"
+                                color="#2a62ff"
                                 size={24}
                                 />
                             )}
@@ -130,7 +130,7 @@ export function DrawerContent(props) {
                     icon={() => (
                         <Icon 
                         name="exit-to-app" 
-                        color="red"
+                        color="#2a62ff"
                         size={24}
                         />
                     )}

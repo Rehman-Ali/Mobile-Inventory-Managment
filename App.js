@@ -14,24 +14,55 @@ import {
 } from 'react-native-paper';
 
  import { DrawerContent } from './screens/DrawerContent';
-
+ import { createStackNavigator } from '@react-navigation/stack';
 import MainTabScreen from './screens/MainTabScreen';
 import Login from './screens/Login';
 import ProfileScreen from './screens/ProfileScreen';
+import ProductDetails from './screens/Sales/ProductDetails';
+import SalesList from './screens/Sales/SalesList';
+import ChangePassword from './screens/ChangePassword';
 import SignUp from './screens/Signup';
 import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingScreen';
 import BookMark from './screens/BookMark';
+import DailyReport from './screens/Reports/DailyReports';
+import Dashboard from './screens/Dashboard';
+
 
 
 
 // import RootStackScreen from './screens/RootStackScreen';
 // import {login} from './components/context';
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+
+
+
+const  homeStack =  () => {
+  return (
+    <Stack.Navigator initialRouteName="home" headerMode="none">
+      <Stack.Screen name="Home"   component={Dashboard} />
+      {/* <Stack.Screen name="saleDetail" component={ProductDetails} /> */}
+    </Stack.Navigator>
+  );
+
+  }
+
+
+const  salesStack =  () => {
+  return (
+    <Stack.Navigator initialRouteName="salesList" headerMode="none">
+      <Stack.Screen name="salesList"   component={SalesList} />
+      <Stack.Screen name="saleDetail" component={ProductDetails} />
+    </Stack.Navigator>
+  );
+
+  }
 
 const App = () => {
 
-  const [login, setLogin] = useState(false)
+  //  const [login, setLogin] = useState(false)
 
   // if( loginState.isLoading ) {
   //   return(
@@ -40,11 +71,11 @@ const App = () => {
   //     </View>
   //   );
   // }
- useEffect(() => {
-    setTimeout(() =>{
-      setLogin(true)
-    }, 1000)
- }, [])
+//  useEffect(() => {
+//     setTimeout(() =>{
+//       setLogin(true)
+//     }, 1000)
+//  }, [])
 
 
   return (
@@ -53,8 +84,8 @@ const App = () => {
     <NavigationContainer>
       {/* { login == true ? ( */}
         <Drawer.Navigator  drawerContent={(props) => <DrawerContent {...props} />}   >
-          <Drawer.Screen name="HomeDrawer"  component={Login} />
-          <Drawer.Screen name="SupportScreen" component={SupportScreen} />
+          <Drawer.Screen name="HomeDrawer"  component={homeStack} />
+          <Drawer.Screen name="Sales" component={salesStack} />
           <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
           <Drawer.Screen name="BookmarkScreen" component={BookMark} />
         </Drawer.Navigator>

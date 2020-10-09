@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,18 +11,19 @@ import {
   ToastAndroid,
 } from 'react-native';
 import img from '../assets/profile.jpg';
-import Icon from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ProfileScreen = ({navigation}) => {
   
   return (
+   
     <ScrollView style={styles.container}>
-        <Text>djfjx</Text>
-      {/* <View style={styles.headerDiv}>
+        
+      <View style={styles.headerDiv}>
         <ImageBackground source={img} style={styles.image}>
           <View style={styles.imgCon}>
             <Icon
-              name="md-person"
+              name="person"
               style={styles.person}
               color="white"
               size={70}
@@ -32,8 +33,8 @@ const ProfileScreen = ({navigation}) => {
             <Text style={styles.text}>Welcome Saeed</Text>
           </View>
           <View style={styles.icons}>
-            <Icon name="md-lock" style={styles.icon} color="white" />
-            <Icon name="md-globe" color="white" />
+            <Icon name="lock" style={styles.icon} color="white" />
+            <Icon name="settings" color="white" />
           </View>
         </ImageBackground>
       </View>
@@ -42,52 +43,38 @@ const ProfileScreen = ({navigation}) => {
       </View>
       <TouchableOpacity
         style={styles.loginDiv}
-        onPress={() => navigation.navigate('changePassword')}>
+        // onPress={() => navigation.navigate('changePassword')}
+        >
         <View style={styles.loginIcon}>
           <Icon
-            name="md-key"
+            name="shop"
             style={{marginLeft: 10}}
-            color="#4c283c"
+            color="red"
+            size={20}
+          />
+          <Text style={styles.textLogin}>Edit Shop</Text>
+        </View>
+        <View style={styles.arrow}>
+          <Icon name="keyboard-arrow-right" color="red" />
+        </View>
+      </TouchableOpacity>
+       <TouchableOpacity
+        style={styles.loginDiv}
+        onPress={() => navigation.navigate('donationhistory')}>
+        <View style={styles.loginIcon}>
+          <Icon
+            name="vpn-key"
+            style={{marginLeft: 10}}
+            color="red"
             size={20}
           />
           <Text style={styles.textLogin}>Change Password</Text>
         </View>
         <View style={styles.arrow}>
-          <Icon name="md-arrow-dropright" color="#4c283c" />
+        <Icon name="keyboard-arrow-right" color="red" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.loginDiv}
-        onPress={() => navigation.navigate('donationhistory')}>
-        <View style={styles.loginIcon}>
-          <Icon
-            name="md-heart"
-            style={{marginLeft: 10}}
-            color="#4c283c"
-            size={20}
-          />
-          <Text style={styles.textLogin}>Donation History</Text>
-        </View>
-        <View style={styles.arrow}>
-          <Icon name="md-arrow-dropright" color="#4c283c" />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.loginDiv}
-        onPress={() => navigation.navigate('donationrequest')}>
-        <View style={styles.loginIcon}>
-          <Icon
-            name="md-hand"
-            style={{marginLeft: 10}}
-            color="#4c283c"
-            size={20}
-          />
-          <Text style={styles.textLogin}>Request History</Text>
-        </View>
-        <View style={styles.arrow}>
-          <Icon name="md-arrow-dropright" color="#4c283c" />
-        </View>
-      </TouchableOpacity>
+      
       <View style={styles.myAccount}>
         <Text style={styles.textAccount}>Help & Support</Text>
       </View>
@@ -96,15 +83,15 @@ const ProfileScreen = ({navigation}) => {
         onPress={() => navigation.navigate('aboutus')}>
         <View style={styles.loginIcon}>
           <Icon
-            name="md-contacts"
+            name="sentiment-very-satisfied"
             style={{marginLeft: 10}}
-            color="#4c283c"
+            color="red"
             size={20}
           />
           <Text style={styles.textLogin}>About Us</Text>
         </View>
         <View style={styles.arrow}>
-          <Icon name="md-arrow-dropright" color="#4c283c" />
+        <Icon name="keyboard-arrow-right" color="red" />
         </View>
       </TouchableOpacity>
 
@@ -113,19 +100,20 @@ const ProfileScreen = ({navigation}) => {
         onPress={() => navigation.navigate('contactus')}>
         <View style={styles.loginIcon}>
           <Icon
-            name="md-contact"
+            name="call"
             style={{marginLeft: 10}}
-            color="#4c283c"
+            color="red"
             size={20}
           />
           <Text style={styles.textLogin}>Contact Us</Text>
         </View>
         <View style={styles.arrow}>
-          <Icon name="md-arrow-dropright" color="#4c283c" />
+        <Icon name="keyboard-arrow-right" color="red" />
         </View>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       
     </ScrollView>
+    
   );
 };
 
@@ -134,6 +122,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'#ffff'
   },
   headerDiv: {
     height: 250,
@@ -151,7 +140,7 @@ const styles = StyleSheet.create({
   imgCon: {
     height: 100,
     width: 100,
-    backgroundColor: '#4c283c',
+    backgroundColor: 'red',
     borderRadius: 100,
     marginTop: 25,
   },
