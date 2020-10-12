@@ -8,13 +8,17 @@ import {
     Image,
     Dimensions,
   TouchableOpacity,
+  ImageBackground
   } from 'react-native';
 import Arrowicon from 'react-native-vector-icons/AntDesign';
 import img from '../../assets/profile.jpg';
+import MyTabs from './AllReports';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
+
+
 export default class DailyReport extends Component {
   constructor(props){
     super(props)
@@ -24,18 +28,18 @@ export default class DailyReport extends Component {
   render(){
     return (
         <View style={styles.containerr}>
-
+      <ImageBackground source={img} style={{height:220, width:'100%'}}>
      <View style={styles.hbr}>
         <View style={styles.header}>
           <Arrowicon
-            onPress={() => navigation.goBack()}
+            onPress={() => this.props.navigation.navigate('HomeDrawer')}
             name="arrowleft"
-            color="#3F424E"
+            color="#fff"
             size={24}
           />
-          <Text style={{fontWeight: 'bold', fontSize: 20}}>
+          {/* <Text style={{fontWeight: 'bold', fontSize: 20}}>
             Daily Report
-          </Text>
+          </Text> */}
           {/* <FontAwesome name="shopping-cart" color="#FB1F1F" size={20} /> */}
           <View />
         </View>
@@ -104,298 +108,14 @@ export default class DailyReport extends Component {
       </View>
       </View>
       </View>
+      </ImageBackground>
       <View style={styles.bar}>
-         <Text style={styles.barText}>REPORT SUMMARY</Text>
+        <MyTabs/>
       </View>
-      <View style={styles.detail}>
-         <View style={styles.detail1}>
-           <View style={styles.detailIn1}>
-               <View style={styles.logo}></View>
-               <View style={styles.qty}>
-                   <Text>3454</Text>
-               </View>
-               <View style={styles.textlogo}></View>
-           </View>
-           <View style={styles.detailIn2}></View>
-         </View>
-         <View style={styles.detail1}>
-         <View style={styles.detailIn1}></View>
-           <View style={styles.detailIn2}></View>
-         </View>
-      </View>
-      <View style={styles.bar}>
-         <Text style={styles.barText}>SALES PRODUCT</Text>
-      </View>
-      <ScrollView  >
-         
-              
-         <TouchableOpacity
-           >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-         <TouchableOpacity
-         //   onPress={() =>
-         //     props.navigation.navigate('meanudealdetailscreen', {item})
-         //   }
-           >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-         <TouchableOpacity
-         //   onPress={() =>
-         //     props.navigation.navigate('meanudealdetailscreen', {item})
-         //   }
-           >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-         <TouchableOpacity
-         //   onPress={() =>
-         //     props.navigation.navigate('meanudealdetailscreen', {item})
-         //   }
-           >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-         <TouchableOpacity
-           
-           >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-         <TouchableOpacity
-          >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-         <TouchableOpacity
-           >
-           <View style={styles.meanurow}>
-             <View style={{marginLeft: 25}}>
-               <Image
-                 style={{width: 90, height: 100, borderRadius: 10}}
-                 source={img}
-               />
-             </View>
-             <View style={styles.meanutext}>
-               <Text style={{marginBottom: 18, fontSize: 18}}>
-                 Product Name
-               </Text>
-               <View style={{flexDirection: 'row'}}>
-                 <Text
-                   style={{
-                     color: '#A9A5A3',
-                     marginRight: 5,
-                     marginTop: -5,
-                   }}>
-                   Description:
-                 </Text>
-               </View>
-               <Text
-                 style={{
-                   color: '#A9A5A3',
-                   marginRight: 5,
-                   marginTop: -5,
-                   fontSize: 12,
-                   paddingLeft: 50,
-                 }}>
-                 Description......
-               </Text>
-             </View>
-           </View>
-         </TouchableOpacity>
-     
+      
      
     
-    
- </ScrollView>
+
     </View>
     
     )
@@ -408,17 +128,17 @@ export default class DailyReport extends Component {
 const styles = StyleSheet.create({
     containerr: {
         flex:1,
-       backgroundColor: '#ffff',
+       backgroundColor: '#f9f9fb',
     },
     container: {
       flex: 1,
       // alignItems: "center",
       // justifyContent: 'center',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#f9f9fb',
     },
     hbr: {
-      borderBottomWidth: 0.3,
-      borderBottomColor: '#dee0df',
+      // borderBottomWidth: 0.3,
+      // borderBottomColor: '#dee0df',
       // height: 40,
     },
     header: {
@@ -444,7 +164,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
   
       borderBottomWidth: 1,
-      borderBottomColor: '#ffff',
+      borderBottomColor: '#f9f9fb',
   
       width: '77%',
       marginTop: 70,
@@ -452,7 +172,7 @@ const styles = StyleSheet.create({
     textInput: {
       marginTop: -10,
       paddingLeft: 10,
-      color: '#ffff',
+      color: '#f9f9fb',
     },
     userfield2: {
       flexDirection: 'row',
@@ -482,9 +202,9 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 25,
     },
     mainDiv:{
-        height: '20%',
-        backgroundColor: '#fff',
-        marginTop: 10,
+        height: '70%',
+        backgroundColor: '#2a62ff',
+        // marginTop: 10,
         borderRadius:10,
         width:"95%",
         alignSelf:'center',
@@ -504,12 +224,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         // paddingTop: 7
+        color:'#fff'
         
     },
     bar:{
         marginTop: 10,
-        height: '5%',
-        backgroundColor : "#eee"
+        height: '100%',
+        backgroundColor : "#f9f9fb"
     },
     barText:{
         paddingLeft: 15,
@@ -533,7 +254,7 @@ const styles = StyleSheet.create({
        },
        detailIn1:{
            width: "40%",
-           backgroundColor: '#ffff',
+           backgroundColor: '#f9f9fb',
            height:'90%',
            elevation:3,
            borderRadius:5

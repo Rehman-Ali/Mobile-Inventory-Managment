@@ -54,7 +54,7 @@ const ChangePassword = ({navigation}) => {
           </Text>
           <Text style={{color: '#2a62ff'}}>34</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.div1}>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('report')} >
           <Icon 
             name="home-outline" 
             color="#2a62ff"

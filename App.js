@@ -26,6 +26,7 @@ import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingScreen';
 import BookMark from './screens/BookMark';
 import DailyReport from './screens/Reports/DailyReports';
+import MyTabs from './screens/Reports/AllReports';
 import Dashboard from './screens/Dashboard';
 
 
@@ -60,6 +61,18 @@ const  salesStack =  () => {
 
   }
 
+  
+
+const  reportStack =  () => {
+  return (
+    <Stack.Navigator initialRouteName="dailyreport" headerMode="none">
+      <Stack.Screen name="dailyreport"   component={DailyReport} />
+      <Stack.Screen name="all" component={MyTabs} />
+    </Stack.Navigator>
+  );
+
+  }
+
 const App = () => {
 
   //  const [login, setLogin] = useState(false)
@@ -86,7 +99,7 @@ const App = () => {
         <Drawer.Navigator  drawerContent={(props) => <DrawerContent {...props} />}   >
           <Drawer.Screen name="HomeDrawer"  component={homeStack} />
           <Drawer.Screen name="Sales" component={salesStack} />
-          <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
+          <Drawer.Screen name="report" component={reportStack} />
           <Drawer.Screen name="BookmarkScreen" component={BookMark} />
         </Drawer.Navigator>
       {/* ) */}
