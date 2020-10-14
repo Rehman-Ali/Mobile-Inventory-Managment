@@ -32,7 +32,7 @@ import Dashboard from './screens/Dashboard';
 
 
 
-// import RootStackScreen from './screens/RootStackScreen';
+ import RootStackScreen from './screens/RootStackScreen';
 // import {login} from './components/context';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -43,7 +43,7 @@ const Stack = createStackNavigator();
 const  homeStack =  () => {
   return (
     <Stack.Navigator initialRouteName="home" headerMode="none">
-      <Stack.Screen name="Home"   component={Dashboard} />
+      <Stack.Screen name="home"   component={Dashboard} />
       {/* <Stack.Screen name="saleDetail" component={ProductDetails} /> */}
     </Stack.Navigator>
   );
@@ -75,7 +75,7 @@ const  reportStack =  () => {
 
 const App = () => {
 
-  //  const [login, setLogin] = useState(false)
+    const [login, setLogin] = useState(false)
 
   // if( loginState.isLoading ) {
   //   return(
@@ -95,17 +95,17 @@ const App = () => {
     <>
     {/* <AuthContext.Provider value={authContext}> */}
     <NavigationContainer>
-      {/* { login == true ? ( */}
+      { login == true ? (
         <Drawer.Navigator  drawerContent={(props) => <DrawerContent {...props} />}   >
           <Drawer.Screen name="HomeDrawer"  component={homeStack} />
           <Drawer.Screen name="Sales" component={salesStack} />
           <Drawer.Screen name="report" component={reportStack} />
           <Drawer.Screen name="BookmarkScreen" component={BookMark} />
         </Drawer.Navigator>
-      {/* ) */}
-    {/* // :
-    //   <RootStackScreen/>
-    // } */}
+       ) 
+    :
+       <RootStackScreen/>
+     } 
     </NavigationContainer>
     {/* </AuthContext.Provider> */}
     </>

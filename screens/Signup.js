@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { 
     View, 
     Text, 
@@ -10,15 +10,19 @@ import {
     StyleSheet,
     ScrollView,
     StatusBar,
-    ImageBackground
+    ImageBackground,
+    ToastAndroid,
+    ActivityIndicator,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import img from '../assets/signup3.jpg';
+import {SERVER_URL} from '../utils/config';
 const SignUp = ({navigation}) => {
-
+    
+    const [spinner, setSpinner] = useState(false)
     const [data, setData] = React.useState({
         username: '',
         password: '',
@@ -72,9 +76,120 @@ const SignUp = ({navigation}) => {
         });
     }
 
+    const PostData = () => {
+        setSpinner(true)
+     
+       
+  if (data.username === "") {
+    setSpinner(false)
+
+    ToastAndroid.showWithGravity(
+      "Please Enter Email!",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+     
+    );
+  }else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.username) == false){
+   
+    setSpinner(false)
+    ToastAndroid.showWithGravity(
+      "Please Enter valid Email!",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+     
+    );
+  }
+  else if (data.password === "") {
+    setSpinner(false)
+   
+    ToastAndroid.showWithGravity(
+      "Please Enter Pasword!",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+     
+    );
+  }
+  else if (data.password !== data.confirm_password) {
+    setSpinner(false)
+   
+    ToastAndroid.showWithGravity(
+      "Pasword does not match!",
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+     
+    );
+  }
+
+  else{
+     
+     
+     
+
+        fetch(`${SERVER_URL}api/users/signup`, {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: data.username,
+                password: data.password,
+                // cnic: cnic
+
+            })
+        })
+            .then(response => response.json())
+            .then(responseJson => {
+               setSpinner(false)
+
+               if(responseJson.message == 'signup successfull'){
+                ToastAndroid.showWithGravity(
+                    responseJson.message,
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                   
+                  );
+                  navigation.navigate('SignInScreen');
+                }else{
+                    setSpinner(false)
+
+                    ToastAndroid.showWithGravity(
+                        responseJson.msg,
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER,
+                       
+                      );
+                }
+            })
+
+            .catch(error => {
+              setSpinner(false)
+
+                ToastAndroid.showWithGravity(
+                  "catch working",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                   
+                  );
+            });
+        }
+
+    }
+
+    const screenHeight = Math.round(Dimensions.get('window').height) / 2;
+
+
     return (
       <ImageBackground source={img} style={styles.container}>
-          <StatusBar backgroundColor='red' barStyle="light-content"/>
+          <StatusBar backgroundColor='#2a62ff' barStyle="light-content"/>
+          {
+            spinner == true ? <ActivityIndicator
+            size="large"
+            color="#2a62ff"
+           style={{paddingVertical: screenHeight, backgroundColor:'#000', opacity:0.5}}
+         />
+         :
+         <>
         <View style={styles.header}>
             <Text style={styles.text_header}>Register Now!</Text>
         </View>
@@ -83,7 +198,7 @@ const SignUp = ({navigation}) => {
             style={styles.footer}
         >
             <ScrollView>
-            <Text style={styles.text_footer}>Username</Text>
+            <Text style={styles.text_footer}>Email</Text>
             <View style={styles.action}>
                 <FontAwesome 
                     name="user-o"
@@ -91,7 +206,7 @@ const SignUp = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your Username"
+                    placeholder="Your Email"
                     style={styles.textInput}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
@@ -189,10 +304,10 @@ const SignUp = ({navigation}) => {
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
-                    onPress={() => {}}
+                    onPress={() => PostData()}
                 >
                 <LinearGradient
-                    colors={['red', 'orange']}
+                    colors={['#2a62ff', '#2a62ff']}
                     style={styles.signIn}
                 >
                     <Text style={[styles.textSign, {
@@ -204,18 +319,20 @@ const SignUp = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     style={[styles.signIn, {
-                        borderColor: 'red',
+                        borderColor: '#2a62ff',
                         borderWidth: 1,
                         marginTop: 15
                     }]}
                 >
                     <Text style={[styles.textSign, {
-                        color: 'red'
+                        color: '#2a62ff'
                     }]}>Sign In</Text>
                 </TouchableOpacity>
             </View>
             </ScrollView>
         </Animatable.View>
+        </>
+}
       </ImageBackground>
     );
 };

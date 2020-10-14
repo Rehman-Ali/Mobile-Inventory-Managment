@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { 
     View, 
     Text, 
@@ -8,8 +8,10 @@ import {
     StyleSheet ,
     StatusBar,
     Alert,
-    ImageBackground
-    
+    ImageBackground,
+    Dimensions,
+    ActivityIndicator,
+    ToastAndroid,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,16 +19,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { useTheme } from 'react-native-paper';
-import img from '../assets/login.jpg';
+import img from '../assets/signup3.jpg';
+import {SERVER_URL} from '../utils/config';
+import AsyncStorage from '@react-native-community/async-storage'
 // import { login } from '../components/context';
 
 // import Users from '../model/users';
 
 const Login = ({navigation}) => {
-
+    const [spinner, setSpinner] = useState(false);
+ 
     const [data, setData] = React.useState({
-        username: 'user1',
-        password: 'password',
+        username: '',
+        password: '',
         check_textInputChange: false,
         secureTextEntry: true,
         isValidUser: true,
@@ -55,7 +60,7 @@ const Login = ({navigation}) => {
     }
 
     const handlePasswordChange = (val) => {
-        if( val.trim().length >= 8 ) {
+        if( val.trim().length >= 6 ) {
             setData({
                 ...data,
                 password: val,
@@ -91,35 +96,103 @@ const Login = ({navigation}) => {
         }
     }
 
-    const loginHandle = (userName, password) => {
+    const  loginHandle =() => {
+        setSpinner(true)
+     
+        if (data.username === "") {
+            setSpinner(false)
+     
+            ToastAndroid.showWithGravity(
+            "Please Enter Email!",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
+        }else if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.username) == false){
+            setSpinner(false)
+     
+            ToastAndroid.showWithGravity(
+            "Please Enter valid Email!",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
+        }else if (data.password === "") {
+            setSpinner(false)
+     
+            ToastAndroid.showWithGravity(
+            "Please Enter Pasword!",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+           
+          );
+        }
+        else{
+         fetch(`${SERVER_URL}api/users/login`, {
+           method: 'POST',
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({
+             email: data.username,
+             password: data.password,
+           }),
+         })
+           .then(response => response.json())
+           .then(async responseJson => {
+           
+             setSpinner(false)
+             if (responseJson.message == 'login successfull') {
+               await AsyncStorage.setItem('User', JSON.stringify(responseJson));
+                 //   ToastAndroid.show(responseJson.message, ToastAndroid.CENTER);
+               ToastAndroid.showWithGravity(
+                 responseJson.message,
+                 ToastAndroid.SHORT,
+                 ToastAndroid.CENTER,
+                
+               );
+               navigation.navigate('home');
+             } else {
+             //   ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER);
+             setSpinner(false)
+             ToastAndroid.showWithGravity(
+                 'Incorrect Credcentials!',
+                 ToastAndroid.SHORT,
+                 ToastAndroid.CENTER,
+      
+           
+               );
+             }
+           })
+           .catch(error =>
+             // ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER),
+          {  setSpinner(false)
+             ToastAndroid.showWithGravity(
+                 'Incorrect Credcentials!',
+                 ToastAndroid.SHORT,
+                 ToastAndroid.CENTER,
+                
+           
+                     )
+              } );
+      
+        }
+          }
 
-        // (true)login
-        // const foundUser = Users.filter( item => {
-        //     return userName == item.username && password == item.password;
-        // } );
+          const screenHeight = Math.round(Dimensions.get('window').height) / 2;
 
-        // if ( data.username.length == 0 || data.password.length == 0 ) {
-        //     Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
-        //         {text: 'Okay'}
-        //     ]);
-        //     return;
-        // }
-
-        // if ( foundUser.length == 0 ) {
-        //     Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-        //         {text: 'Okay'}
-        //     ]);
-        //     return;
-        // }
-
-
-        // signIn(foundUser);
-
-    }
-
+      
     return (
       <ImageBackground source={img} style={styles.container}>
-          <StatusBar backgroundColor='red' barStyle="light-content"/>
+          <StatusBar backgroundColor='#2a62ff' barStyle="light-content"/>
+          {
+            spinner == true ? <ActivityIndicator
+            size="large"
+            color="#2a62ff"
+           style={{paddingVertical: screenHeight, backgroundColor:'#000', opacity:0.5}}
+         />
+         :
+         <>
         <View  style={styles.header} >
             <Text style={styles.text_header}>Welcome!</Text>
         </View>
@@ -213,15 +286,15 @@ const Login = ({navigation}) => {
             
 
             <TouchableOpacity>
-                <Text style={{color: 'red', marginTop:15}}>Forgot password?</Text>
+                <Text style={{color: '#2a62ff', marginTop:15}}>Forgot password?</Text>
             </TouchableOpacity>
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
-                    onPress={() => {loginHandle( data.username, data.password )}}
+                    onPress={() => loginHandle()}
                 >
                 <LinearGradient
-                    colors={['red', 'orange']}
+                    colors={['#2a62ff', '#2a62ff']}
                     style={styles.signIn}
                 >
                     <Text style={[styles.textSign, {
@@ -233,17 +306,18 @@ const Login = ({navigation}) => {
                 <TouchableOpacity
                     onPress={() => navigation.navigate('SignUpScreen')}
                     style={[styles.signIn, {
-                        borderColor: 'red',
+                        borderColor: '#2a62ff',
                         borderWidth: 1,
                         marginTop: 15
                     }]}
                 >
                     <Text style={[styles.textSign, {
-                        color: 'red'
+                        color: '#2a62ff'
                     }]}>Sign Up</Text>
                 </TouchableOpacity>
             </View>
         </Animatable.View>
+        </>}
       </ImageBackground>
     );
 };
