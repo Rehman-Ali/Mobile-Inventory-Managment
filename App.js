@@ -13,6 +13,7 @@ import {
   DarkTheme as PaperDarkTheme 
 } from 'react-native-paper';
 
+
  import { DrawerContent } from './screens/DrawerContent';
  import { createStackNavigator } from '@react-navigation/stack';
 import MainTabScreen from './screens/MainTabScreen';
@@ -28,11 +29,11 @@ import BookMark from './screens/BookMark';
 import DailyReport from './screens/Reports/DailyReports';
 import MyTabs from './screens/Reports/AllReports';
 import Dashboard from './screens/Dashboard';
-
-
-
+import AsyncStorage from '@react-native-community/async-storage'
+import {useSelector, useDispatch} from 'react-redux';
 
  import RootStackScreen from './screens/RootStackScreen';
+import { LOGIN_FAIL , LOGIN_SUCCESS} from './actions/types';
 // import {login} from './components/context';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -75,27 +76,41 @@ const  reportStack =  () => {
 
 const App = () => {
 
-    const [login, setLogin] = useState(false)
+    // const [login, setLogin] = useState(false)
+    const login = useSelector(state => state.login.login_permission)
+    const dispatch = useDispatch();
+    console.log('login', login)
+  
+    const  checkStorge = async () => {
+      try {
+        const value = await AsyncStorage.getItem('User');
+      
 
-  // if( loginState.isLoading ) {
-  //   return(
-  //     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-  //       <ActivityIndicator size="large"/>
-  //     </View>
-  //   );
-  // }
-//  useEffect(() => {
-//     setTimeout(() =>{
-//       setLogin(true)
-//     }, 1000)
-//  }, [])
+        if (value !== null) {
+        dispatch({
+              type: LOGIN_SUCCESS
+          }) 
+          console.log('user', value)
+        } 
+      } catch (error) {
+        dispatch({
+          type: LOGIN_FAIL
+      })      
+      console.log('catch', error)   
+      }
+    };
+  
+  
+    useEffect(() =>{
+      checkStorge();  
+    }, [])
+  
 
 
   return (
-    <>
-    {/* <AuthContext.Provider value={authContext}> */}
+  
     <NavigationContainer>
-      { login == true ? (
+      { login === true ? (
         <Drawer.Navigator  drawerContent={(props) => <DrawerContent {...props} />}   >
           <Drawer.Screen name="HomeDrawer"  component={homeStack} />
           <Drawer.Screen name="Sales" component={salesStack} />
@@ -107,8 +122,6 @@ const App = () => {
        <RootStackScreen/>
      } 
     </NavigationContainer>
-    {/* </AuthContext.Provider> */}
-    </>
   );
 }
 

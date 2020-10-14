@@ -22,13 +22,15 @@ import { useTheme } from 'react-native-paper';
 import img from '../assets/signup3.jpg';
 import {SERVER_URL} from '../utils/config';
 import AsyncStorage from '@react-native-community/async-storage'
+import {useDispatch} from 'react-redux';
+import { LOGIN_SUCCESS } from '../actions/types';
 // import { login } from '../components/context';
 
 // import Users from '../model/users';
 
 const Login = ({navigation}) => {
     const [spinner, setSpinner] = useState(false);
- 
+    const dispatch = useDispatch()
     const [data, setData] = React.useState({
         username: '',
         password: '',
@@ -151,7 +153,9 @@ const Login = ({navigation}) => {
                  ToastAndroid.CENTER,
                 
                );
-               navigation.navigate('home');
+              dispatch({
+                  type: LOGIN_SUCCESS
+              })
              } else {
              //   ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER);
              setSpinner(false)
@@ -235,7 +239,7 @@ const Login = ({navigation}) => {
             </View>
             { data.isValidUser ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+            <Text style={styles.errorMsg}>Email must be valid!</Text>
             </Animatable.View>
             }
             
@@ -280,7 +284,7 @@ const Login = ({navigation}) => {
             </View>
             { data.isValidPassword ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+            <Text style={styles.errorMsg}>Password must be 6 characters long.</Text>
             </Animatable.View>
             }
             

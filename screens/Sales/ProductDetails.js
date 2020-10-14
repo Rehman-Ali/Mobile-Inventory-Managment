@@ -20,8 +20,8 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
 
 import img from '../../assets/profile.jpg';
-const ProductDetail = ({navigation}) => {
-  
+const ProductDetail = ({navigation, route}) => {
+  const { item } = route.params;
   return (
    
     <View style={styles.container}>
@@ -57,9 +57,9 @@ const ProductDetail = ({navigation}) => {
             size={50}
           />
           <Text>
-            Sales
+            Imei
           </Text>
-          <Text style={{color: '#2a62ff'}}>34</Text>
+      <Text style={{color: '#2a62ff'}}>{item.imei}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.div1}>
           <Icon 
@@ -68,9 +68,9 @@ const ProductDetail = ({navigation}) => {
             size={50}
           />
           <Text>
-            Reports
+            Brand
           </Text>
-          <Text style={{color: '#2a62ff'}}>534</Text>
+      <Text style={{color: '#2a62ff'}}>{item.brand}</Text>
           </TouchableOpacity>
         
       </View>
@@ -88,9 +88,9 @@ const ProductDetail = ({navigation}) => {
             size={50}
           />
           <Text>
-            Sales
+            Model
           </Text>
-          <Text style={{color: '#2a62ff'}}>34</Text>
+      <Text style={{color: '#2a62ff'}}>{item.model}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.div1}>
           <Icon 
@@ -99,9 +99,9 @@ const ProductDetail = ({navigation}) => {
             size={50}
           />
           <Text>
-            Reports
+            Sold Price
           </Text>
-          <Text style={{color: '#2a62ff'}}>534</Text>
+      <Text style={{color: '#2a62ff'}}>{item.sold_price}</Text>
           </TouchableOpacity>
         
       </View>

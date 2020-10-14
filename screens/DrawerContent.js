@@ -15,7 +15,9 @@ import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
-
+import {LOGIN_FAIL, LOGIN_SUCCESS} from '../actions/types';
+import AsyncStorage from '@react-native-community/async-storage'
+import {useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import{ AuthContext } from '../components/context';
@@ -25,6 +27,20 @@ export function DrawerContent(props) {
     // const paperTheme = useTheme();
 
     // const { signOut, toggleTheme } = React.useContext(AuthContext);
+     const dispatch = useDispatch();
+
+    const  Logout = async () => {
+        try {
+          await AsyncStorage.removeItem('User');
+          dispatch({
+              type: LOGIN_FAIL
+          }) 
+        }catch(error){
+          console.log(error)
+        }
+
+      };
+    
 
     return(
         <View style={{flex:1}}>
@@ -66,7 +82,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Dashboard"
-                            onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => {props.navigation.navigate('home')}}
                         />
                         <DrawerItem 
                             icon={() => (
@@ -135,7 +151,7 @@ export function DrawerContent(props) {
                         />
                     )}
                     label="Sign Out"
-                    // onPress={() => {signOut()}}
+                     onPress={() => Logout()}
                 />
             </Drawer.Section>
         </View>
