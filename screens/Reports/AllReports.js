@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React , {useState, useEffect} from 'react';
 import { Text, View ,Dimensions,StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -12,9 +12,67 @@ import {
     
   } from "react-native-chart-kit";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {SERVER_URL} from '../../utils/config';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 // import { ScrollView } from 'react-native-gesture-handler';
 
 function DailyScreen() {
+  
+  const [spinner, setSpinner] = useState(false);
+  const [token, setToken] = useState();
+  const dispatch = useDispatch();
+  // const product = useSelector((state) => state.sale.allproduct);
+  // console.log('product', product);
+
+  const checkStorge = async () => {
+    try {
+      const value = await AsyncStorage.getItem('User');
+      console.log('valusse', JSON.parse(value));
+      let data = JSON.parse(value)
+      if (value !== null) {
+        console.log('toek ', data.token);
+        setToken(data.token);
+      }
+    } catch (error) {
+      console.log('catch err', error);
+    }
+  };
+
+  useEffect(() => {
+    checkStorge();
+  }, []);
+
+ const onClick = () => {
+    setSpinner(true);
+    console.log('token', token);
+    fetch(`${SERVER_URL}api/report/daily`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  token,
+      },
+    })
+      .then((response) => response.json())
+      .then(async (responseJson) => {
+        setSpinner(false);
+        dispatch({
+          type: GET_SOLD_PRODUCT_SUCCESS,
+          payload: responseJson.product,
+        });
+        console.log('then', responseJson);
+      })
+      .catch((error) => {
+        // ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER),
+        setSpinner(false);
+       
+        console.log('catchhh', error);
+      });
+  };
+  const screenHeight = Math.round(Dimensions.get('window').height) / 2;
+ 
+ 
+ 
   return (
     <ScrollView style={{ flex: 1, height: 1000, backgroundColor:'#f9f9fb',  }}>
    <Text style={{paddingTop:20,paddingLeft:20,}}>Report History:</Text>

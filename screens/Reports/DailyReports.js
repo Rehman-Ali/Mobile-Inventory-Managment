@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import DatePicker from 'react-native-datepicker'
 import {
     StyleSheet,
@@ -19,20 +19,27 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
 
 
-export default class DailyReport extends Component {
-  constructor(props){
-    super(props)
-    this.state = {date:"2016-05-15"}
-  }
+const DailyReport = ({navigation}) => {
+  // constructor(props){
+  //   super(props)
+  //   this.state = {date:"2016-05-15"}
+  // }
 
-  render(){
+  // render(){
+
+    const [sdate, setSDate] = useState();
+    const [edate, setEDate] = useState();
+
+    console.log('edate', edate)
+    console.log('sdate', sdate)
+
     return (
-        <View style={styles.containerr}>
+      <View style={styles.containerr}>
       <ImageBackground source={img} style={{height:220, width:'100%'}}>
      <View style={styles.hbr}>
         <View style={styles.header}>
           <Arrowicon
-            onPress={() => this.props.navigation.navigate('HomeDrawer')}
+            onPress={() => navigation.navigate('HomeDrawer')}
             name="arrowleft"
             color="#fff"
             size={24}
@@ -52,7 +59,7 @@ export default class DailyReport extends Component {
           <View>
        <DatePicker
         style={{width: 200}}
-        date={this.state.date}
+        date={sdate}
         mode="date"
         placeholder="select date"
         format="YYYY-MM-DD"
@@ -72,7 +79,7 @@ export default class DailyReport extends Component {
           }
           // ... You can check the source to find the other keys.
         }}
-        onDateChange={(date) => {this.setState({date: date})}}
+        onDateChange={(date) => setSDate(date)}
       />
       </View>
       </View>
@@ -83,7 +90,7 @@ export default class DailyReport extends Component {
           <View>
        <DatePicker
         style={{width: 200}}
-        date={this.state.date}
+        date={edate}
         mode="date"
         placeholder="select date"
         format="YYYY-MM-DD"
@@ -103,24 +110,20 @@ export default class DailyReport extends Component {
           }
           // ... You can check the source to find the other keys.
         }}
-        onDateChange={(date) => {this.setState({date: date})}}
+        onDateChange={(date) => setEDate(date)}
       />
       </View>
       </View>
       </View>
       </ImageBackground>
       <View style={styles.bar}>
-        <MyTabs/>
+        <MyTabs sDate={sdate} eDate={edate}/>
       </View>
-      
-     
-    
-
     </View>
     
     )
   }
-}
+export default DailyReport;
 
 
 
