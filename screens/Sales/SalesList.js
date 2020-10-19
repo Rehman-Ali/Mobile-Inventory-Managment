@@ -80,8 +80,7 @@ const ShopList = ({navigation}) => {
   const renderItem = ({ item }) => {
    
     return (
-      <TouchableOpacity
-              
+      <TouchableOpacity      
       style={styles.card}
       onPress={() => navigation.navigate('saleDetail', {item : item})}>
       <View style={styles.diiv1}>

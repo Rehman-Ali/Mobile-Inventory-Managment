@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState , useEffect} from 'react'
 import DatePicker from 'react-native-datepicker'
 import {
     StyleSheet,
@@ -23,29 +23,91 @@ import {
   
 } from "react-native-chart-kit";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {SERVER_URL} from '../../utils/config';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage'
 
+import {
+  GET_BESTSELLING_REPORT_SUCCESS,
+  GET_BESTSELLING_REPORT_FAIL,
+} from '../../actions/types';
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
 
 
 const DailyReport = ({navigation}) => {
-  // constructor(props){
-  //   super(props)
-  //   this.state = {date:"2016-05-15"}
-  // }
+  
+     const [sdate, setSDate] = useState(new Date());
+       const dt =new Date();
+       let dtt =new Date(); 
+       dtt.setDate(-30);
+     const [sdateBestSale, setSDateBestSale] = useState(dt);
+    
+    const [edateBestSale, setEDateBestSale] = useState(dtt);
 
-  // render(){
+    const [spinner, setSpinner] = useState(false);
+    const [token, setToken] = useState();
+    const dispatch = useDispatch();
+   
+    const bestSellingGraphDate = useSelector(state => state.report.bestSelling)
+  
+    const checkStorge = async () => {
+      try {
+        const value = await AsyncStorage.getItem('User');
+        console.log('valusse', JSON.parse(value));
+        let data = JSON.parse(value)
+        if (value !== null) {
+          console.log('toek ', data.token);
+          setToken(data.token);
+        }
+      } catch (error) {
+        console.log('catch err', error);
+      }
+    };
+  
+    useEffect(() => {
+      checkStorge();
+    }, []);
+  
+    useEffect(() => {
+      setSpinner(true);
+      console.log('token', token);
+      fetch(`${SERVER_URL}api/report/best-selling`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' +  token
+        },
+        body:JSON.stringify({
+              sDate: sdateBestSale,
+              eDate: edateBestSale
+        })
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          setSpinner(false);
+          dispatch({
+            type: GET_BESTSELLING_REPORT_SUCCESS,
+            payload: responseJson.report,
+          });
+          console.log('then', responseJson);
+        })
+        .catch((error) => {
+          // ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER),
+          setSpinner(false);
+         
+          console.log('catchhh', error);
+        });
+    }, [token]);
+    const screenHeight = Math.round(Dimensions.get('window').height) / 2;
+    console.log('best selling',bestSellingGraphDate )
 
-    const [sdate, setSDate] = useState();
-    const [edate, setEDate] = useState();
 
-    console.log('edate', edate)
-    console.log('sdate', sdate)
 
     return (
       <View style={styles.containerr}>
-      <ImageBackground source={img} style={{height:220, width:'100%'}}>
+      <ImageBackground source={img} style={{height:120, width:'100%'}}>
      <View style={styles.hbr}>
         <View style={styles.header}>
           <Arrowicon

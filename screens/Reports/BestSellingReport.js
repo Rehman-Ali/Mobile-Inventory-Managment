@@ -1,6 +1,6 @@
 import React, { Component , useState} from 'react'
-// import DatePicker from 'react-native-datepicker'
-import DatePicker from 'react-native-date-picker'
+import DatePicker from 'react-native-datepicker'
+
 import {
     StyleSheet,
     View,
@@ -8,7 +8,8 @@ import {
     ScrollView,
     Dimensions,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  Button
   } from 'react-native';
 import Arrowicon from 'react-native-vector-icons/AntDesign';
 import img from '../../assets/profile.jpg';
@@ -21,7 +22,9 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
 
 const BestSellingReport = ({navigation}) => {
       const [date, setDate] = useState(new Date());
-    return (
+    
+      
+      return (
         <View style={styles.containerr}>
       <ImageBackground source={img} style={{height:120, width:'100%'}}>
      <View style={styles.hbr}>
@@ -41,7 +44,78 @@ const BestSellingReport = ({navigation}) => {
       </View>
       <View style={styles.mainDiv}>
         <Text style={{fontSize: 30, color:'#fff', fontWeight: 'bold', textAlign:'center', textAlignVertical: 'center'}}>Best Selling Report</Text>
-      <View style={styles.div11}>
+     
+      </View>
+      </ImageBackground>
+
+      <View style={{height: '20%', backgroundColor: '#2a62ff', width:'95%', alignSelf:'center', marginTop: 10, borderRadius: 10, elevation: 5}}>
+     <View style={{flexDirection:'row', justifyContent:'space-around', alignItems: 'center', alignContent:'center',  marginTop : '5%'}}>
+      <View>
+          <Text style={styles.text1}>Start Date:</Text>
+          </View>
+          
+      <DatePicker
+        style={{width: 200}}
+        date={date}
+        mode="date"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2016-05-01"
+        maxDate="2016-06-01"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => setDate(date)}
+      />
+    </View>
+    <View style={{flexDirection:'row', justifyContent:'space-around', alignItems: 'center', alignContent:'center', marginTop : '5%'}}>
+      <View>
+          <Text style={styles.text1}>Start Date:</Text>
+          </View>
+          
+      <DatePicker
+        style={{width: 200}}
+        date={date}
+        mode="date"
+        placeholder="select date"
+        format="YYYY-MM-DD"
+        minDate="2016-05-01"
+        maxDate="2016-06-01"
+        confirmBtnText="Confirm"
+        cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {
+            position: 'absolute',
+            left: 0,
+            top: 4,
+            marginLeft: 0
+          },
+          dateInput: {
+            marginLeft: 36
+          }
+          // ... You can check the source to find the other keys.
+        }}
+        onDateChange={(date) => setDate(date)}
+      />
+    </View>
+    </View>
+    <View style={{ height:'5%', width:'100%', backgroundColor:'#e8eaed', marginTop: 10, }}>
+      <Text style={{ color:'#000', fontWeight:'bold', padding:5, fontSize:16  }}>Report Detail:</Text>
+    </View>
+    
+      {/* <View style={styles.div1}>
+       <View style={styles.div11}>
          <View>
           <Text style={styles.text1}>Start Date:</Text>
           </View>
@@ -52,7 +126,7 @@ const BestSellingReport = ({navigation}) => {
         onDateChange={setDate}
        />
       </View>
-      </View>
+      </View>  */}
       {/* <View style={styles.div11}>
          <View>
           <Text style={styles.text1}>End Date:</Text>
@@ -64,10 +138,8 @@ const BestSellingReport = ({navigation}) => {
       onDateChange={setDate} />
       </View>
       </View> */}
-      </View>
-      </ImageBackground>
       
-
+      {/* </View> */}
 
     </View>
     
@@ -155,7 +227,7 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 25,
     },
     mainDiv:{
-        height: '100%',
+        height: '37%',
         backgroundColor: '#2a62ff',
         // marginTop: 10,
         borderRadius:10,
@@ -165,7 +237,7 @@ const styles = StyleSheet.create({
         opacity: 0.9
     },
     div1:{
-      height: 150,
+      height: '10%',
       width: '42%',
       backgroundColor: '#ffff',
       borderRadius:10,
@@ -176,7 +248,7 @@ const styles = StyleSheet.create({
       elevation: 7
     },
     div11:{
-        height: '100%',
+        height: '30%',
         width: '95%',
         backgroundColor: '#2a62ff',
         borderRadius:10,
