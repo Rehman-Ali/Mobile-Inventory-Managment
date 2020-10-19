@@ -30,7 +30,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 import {
   GET_BESTSELLING_REPORT_SUCCESS,
   GET_BESTSELLING_REPORT_FAIL,
+  GET_PROFIT_GRAPH_REPORT_FAIL,
+  GET_PROFIT_GRAPH_REPORT_SUCCESS
 } from '../../actions/types';
+import { onChange } from 'react-native-reanimated';
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
@@ -42,15 +45,21 @@ const DailyReport = ({navigation}) => {
        const dt =new Date();
        let dtt =new Date(); 
        dtt.setDate(-30);
-     const [sdateBestSale, setSDateBestSale] = useState(dt);
+     const [edateBestSale, setEDateBestSale] = useState(dt);
+     const [bestSaleBrand, setBestSaleBrand] = useState([]);
+     const [bestSaleBrandCount, setBestSaleBrandCount] = useState([]);
     
-    const [edateBestSale, setEDateBestSale] = useState(dtt);
+    const [sdateBestSale, setSDateBestSale] = useState(dtt);
+    const [edateProfit, setEDateProfit] = useState(dt);
+    
+    const [sdateProfit, setSDateProfit] = useState(dtt);
 
     const [spinner, setSpinner] = useState(false);
-    const [token, setToken] = useState();
+    const [token, setToken] = useState('');
     const dispatch = useDispatch();
    
-    const bestSellingGraphDate = useSelector(state => state.report.bestSelling)
+    const bestSellingGraphDate = useSelector(state => state.report.bestSellingGraph)
+    const ProfitGraph = useSelector(state => state.report.ProfitGraph)
   
     const checkStorge = async () => {
       try {
@@ -58,7 +67,7 @@ const DailyReport = ({navigation}) => {
         console.log('valusse', JSON.parse(value));
         let data = JSON.parse(value)
         if (value !== null) {
-          console.log('toek ', data.token);
+         
           setToken(data.token);
         }
       } catch (error) {
@@ -66,44 +75,100 @@ const DailyReport = ({navigation}) => {
       }
     };
   
-    useEffect(() => {
+     useEffect(() => {
       checkStorge();
-    }, []);
+     }, []);
   
     useEffect(() => {
       setSpinner(true);
+      
       console.log('token', token);
-      fetch(`${SERVER_URL}api/report/best-selling`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' +  token
-        },
-        body:JSON.stringify({
-              sDate: sdateBestSale,
-              eDate: edateBestSale
-        })
-      })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          setSpinner(false);
-          dispatch({
-            type: GET_BESTSELLING_REPORT_SUCCESS,
-            payload: responseJson.report,
-          });
-          console.log('then', responseJson);
-        })
-        .catch((error) => {
-          // ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER),
-          setSpinner(false);
-         
-          console.log('catchhh', error);
-        });
-    }, [token]);
-    const screenHeight = Math.round(Dimensions.get('window').height) / 2;
-    console.log('best selling',bestSellingGraphDate )
+     
+      if(token !== undefined){
+        setInterval(() => {
+          fetch(`${SERVER_URL}api/report/best-selling`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body:JSON.stringify({
+                  sDate: sdateBestSale,
+                  eDate: edateBestSale
+            })
+          })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              setSpinner(false);
+              dispatch({
+                type: GET_BESTSELLING_REPORT_SUCCESS,
+                payload: responseJson,
+              });
+            
+            })
+            .catch((error) => {
+              setSpinner(false);
+             
+              console.log('catchhh', error);
+            });
+    
+            fetch(`${SERVER_URL}api/report/profit`, {
+              method: 'POST',
+              headers: {
+                // 'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              },
+              body:JSON.stringify({
+                    sDate: sdateProfit,
+                    eDate: edateProfit
+              })
+            })
+              .then((response) => response.json())
+              .then((responseJson) => {
+                setSpinner(false);
+                dispatch({
+                  type: GET_PROFIT_GRAPH_REPORT_SUCCESS,
+                  payload: responseJson,
+                });
+               
+              })
+              .catch((error) => {
+                setSpinner(false);
+               
+                console.log('catchhh', error);
+              });
+    
+            //  let br= [];
+            //  let ct = [];
+            //  if(bestSellingGraphDate !== undefined ){
+            //   for(let item of bestSellingGraphDate ){
+            //          br.push(`${item.brand}(${item.model})`)
+            //          ct.push(item.counter)
+            //   }
+              
+            //   if(br.length > 0){
+            //     setBestSaleBrand(br);
+            //     setBestSaleBrandCount(ct)
+            //   }
+              
+            // }
+            // console.log('------selling', br )
+            //   console.log('PROFT -----selling', ct )
+             
+        }, 5000)
+     
+        }
+      
 
 
+    },[!token]);
+    // const screenHeight = Math.round(Dimensions.get('window').height) / 2;
+    
+    console.log('bestSellingGraphDate selling---', bestSellingGraphDate )
 
     return (
       <View style={styles.containerr}>
@@ -197,27 +262,27 @@ const DailyReport = ({navigation}) => {
  
   <BarChart
     data={{
-      labels: ["Sales", "Profit"],
+      labels: [ "Nokia" ],
+      // labels: [ bestSellingGraphDate.brand ],
       // labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
       datasets: [
         {
           data: [
-            Math.random() * 10,
-            Math.random() * 5,
+              0, 1
             ]
         }
       ]
     }}
     width={Dimensions.get("window").width/1.1} // from react-native
     height={220}
-    yAxisLabel="$"
-    yAxisSuffix="k"
+    // yAxisLabel="Modle"
+    // yAxisSuffix=""
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: "#e26a00",
       backgroundGradientFrom: "#2a62ff",
       backgroundGradientTo: "#2a62ff",
-      decimalPlaces: 2, // optional, defaults to 2dp
+      // decimalPlaces: 2, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       style: {

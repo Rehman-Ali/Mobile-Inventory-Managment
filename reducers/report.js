@@ -1,10 +1,13 @@
 import {
     GET_BESTSELLING_REPORT_SUCCESS,
-    GET_BESTSELLING_REPORT_FAIL
+    GET_BESTSELLING_REPORT_FAIL,
+    GET_PROFIT_GRAPH_REPORT_SUCCESS,
+    GET_PROFIT_GRAPH_REPORT_FAIL
   } from '../actions/types';
   
   const initialState = {
-    bestSelling: [],
+    bestSellingGraph: {},
+    ProfitGraph: [],
     
   };
   
@@ -14,17 +17,31 @@ import {
        
         return {
           ...state,
-          bestSelling: action.payload,
+          bestSellingGraph: action.payload,
          
         };
   
       case GET_BESTSELLING_REPORT_FAIL:
         return {
           ...state,
-          bestSelling: [],
+          bestSellingGraph: {},
          
         };
-  
+        case GET_PROFIT_GRAPH_REPORT_SUCCESS:
+       
+            return {
+              ...state,
+              ProfitGraph: action.payload,
+             
+            };
+      
+          case GET_PROFIT_GRAPH_REPORT_FAIL:
+            return {
+              ...state,
+              ProfitGraph: [],
+             
+            };
+      
   
       default:
         return state;

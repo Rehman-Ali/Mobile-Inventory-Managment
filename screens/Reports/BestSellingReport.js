@@ -9,11 +9,14 @@ import {
     Dimensions,
   TouchableOpacity,
   ImageBackground,
-  Button
+  Button, FlatList
   } from 'react-native';
 import Arrowicon from 'react-native-vector-icons/AntDesign';
 import img from '../../assets/profile.jpg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {SERVER_URL} from '../../utils/config';
+import {useDispatch, useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage'
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
@@ -21,8 +24,47 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
 
 
 const BestSellingReport = ({navigation}) => {
-      const [date, setDate] = useState(new Date());
-    
+   const [date, setDate] = useState(new Date())
+  
+   const bestSellingGraphDate = useSelector(state => state.report.bestSellingGraph)
+   const data = bestSellingGraphDate.report;
+   
+   const renderItem = ({ item }) => {
+   
+    return (
+      <TouchableOpacity      
+      style={styles.card}
+      onPress={() => navigation.navigate('saleDetail', {item : item})}>
+      <View style={styles.diiv1}>
+        <View style={styles.img}>
+          <Image
+            source={img}
+            style={{height: 40, width: 40, borderRadius: 25}}
+          />
+        </View>
+        <View style={styles.imgtext}>
+    <Text style={{fontWeight: 'bold'}}>{item.model}</Text>
+    <Text style={{color: 'grey', fontSize: 12}}>{item.brand}</Text>
+        </View>
+      </View>
+      <View style={styles.diiv2}>
+        <View style={styles.inner}>
+    {/* <Text>Rs{item.sold_price}</Text> */}
+    {/* <Text style={{color: 'grey', fontSize: 12}}>Rs{item.price}</Text> */}
+        </View>
+        <View style={styles.icon}>
+          <Arrowicon
+            name="arrow-right"
+            color="#ffff"
+            style={{alignSelf: 'center', marginTop: '14%'}}
+            size={10}
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+    );
+  };
+
       
       return (
         <View style={styles.containerr}>
@@ -113,6 +155,17 @@ const BestSellingReport = ({navigation}) => {
     <View style={{ height:'5%', width:'100%', backgroundColor:'#e8eaed', marginTop: 10, }}>
       <Text style={{ color:'#000', fontWeight:'bold', padding:5, fontSize:16  }}>Report Detail:</Text>
     </View>
+
+    <View style={styles.rightContainer}>
+          <View>
+          <FlatList
+           style={styles.scrol}
+           data={data}
+           renderItem={renderItem}
+           keyExtractor={item => item._id}
+      />
+      </View>
+      </View>
     
       {/* <View style={styles.div1}>
        <View style={styles.div11}>
