@@ -13,6 +13,16 @@ import {
 import Arrowicon from 'react-native-vector-icons/AntDesign';
 import img from '../../assets/profile.jpg';
 import MyTabs from './AllReports';
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+  
+} from "react-native-chart-kit";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
@@ -52,7 +62,8 @@ const DailyReport = ({navigation}) => {
         </View>
       </View>
       <View style={styles.mainDiv}>
-      <View style={styles.div1}>
+        <Text style={{fontSize: 30, color:'#fff', fontWeight: 'bold', textAlign:'center', textAlignVertical: 'center'}}>Reports History</Text>
+      {/* <View style={styles.div1}>
          <View>
           <Text style={styles.text1}>Start Date:</Text>
           </View>
@@ -113,17 +124,177 @@ const DailyReport = ({navigation}) => {
         onDateChange={(date) => setEDate(date)}
       />
       </View>
-      </View>
+      </View> */}
       </View>
       </ImageBackground>
       <View style={styles.bar}>
-        <MyTabs sDate={sdate} eDate={edate}/>
+        {/* <MyTabs/> */}
+        <ScrollView style={{ flex: 1, height: 1000, backgroundColor:'#f9f9fb',  }}>
+   <Text style={{paddingTop:20,paddingLeft:20, fontSize: 22, fontWeight:'bold'}}>Profit History:</Text>
+  <View style={{ alignContent: "flex-start", alignItems:'center'}}>
+ 
+  <BarChart
+    data={{
+      labels: ["Sales", "Profit"],
+      // labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
+      datasets: [
+        {
+          data: [
+            Math.random() * 10,
+            Math.random() * 5,
+            ]
+        }
+      ]
+    }}
+    width={Dimensions.get("window").width/1.1} // from react-native
+    height={220}
+    yAxisLabel="$"
+    yAxisSuffix="k"
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+      backgroundColor: "#e26a00",
+      backgroundGradientFrom: "#2a62ff",
+      backgroundGradientTo: "#2a62ff",
+      decimalPlaces: 2, // optional, defaults to 2dp
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      style: {
+        borderRadius: 16
+      },
+      propsForDots: {
+        r: "6",
+        strokeWidth: "2",
+        stroke: "blue"
+      }
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
+</View>
+<View style={{flexDirection:'row',}}>
+<Text style={{paddingTop:20,paddingLeft:20, fontSize: 22, fontWeight:'bold'}}>Best Selling</Text>
+<Text style={{paddingTop:20,paddingLeft:1, fontSize: 14, fontWeight:'bold', textAlignVertical: 'center'}}>(This Month):</Text>
+</View>
+  <View style={{ alignContent: "flex-start", alignItems:'center'}}>
+ 
+  <BarChart
+    data={{
+      labels: ["Sales", "Profit"],
+      // labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
+      datasets: [
+        {
+          data: [
+            Math.random() * 10,
+            Math.random() * 5,
+            ]
+        }
+      ]
+    }}
+    width={Dimensions.get("window").width/1.1} // from react-native
+    height={220}
+    yAxisLabel="$"
+    yAxisSuffix="k"
+    yAxisInterval={1} // optional, defaults to 1
+    chartConfig={{
+      backgroundColor: "#e26a00",
+      backgroundGradientFrom: "#2a62ff",
+      backgroundGradientTo: "#2a62ff",
+      decimalPlaces: 2, // optional, defaults to 2dp
+      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+      style: {
+        borderRadius: 16
+      },
+      propsForDots: {
+        r: "6",
+        strokeWidth: "2",
+        stroke: "blue"
+      }
+    }}
+    bezier
+    style={{
+      marginVertical: 8,
+      borderRadius: 16
+    }}
+  />
+</View>
+<View style={{height: 550}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: "space-around",
+          marginTop:40
+          
+        }}>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('Sales')}>
+          <Icon 
+            name="home-outline" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+            Closing Report
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('report')} >
+          <Icon 
+            name="home-outline" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+            Sales Report
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>534</Text> */}
+          </TouchableOpacity>
+        
       </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: "space-around",
+          marginTop:40
+          
+        }}>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('bestsellingReport')}>
+          <Icon 
+            name="home-outline" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+            Best Selling
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('bestsellingReport')} >
+          <Icon 
+            name="home-outline" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+           Profit Report
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>534</Text> */}
+          </TouchableOpacity>
+        
+      </View>
+      </View>
+     
+    </ScrollView>
+      </View>
+
+
     </View>
     
     )
   }
-export default DailyReport;
+  export default DailyReport;
 
 
 
@@ -205,23 +376,25 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 25,
     },
     mainDiv:{
-        height: '70%',
+        height: '39%',
         backgroundColor: '#2a62ff',
         // marginTop: 10,
         borderRadius:10,
         width:"95%",
         alignSelf:'center',
-        elevation:5
+        elevation:5,
+        opacity: 0.9
     },
     div1:{
-        marginTop: '5%',
-        flexDirection: 'row',
-        alignContent: "space-between",
-        justifyContent: "center",
-        alignItems:'center',
-       
-       
-
+      height: 150,
+      width: '42%',
+      backgroundColor: '#ffff',
+      borderRadius:10,
+      flexDirection:"column",
+      justifyContent:'center',
+      alignContent:'center',
+      alignItems:'center',
+      elevation: 7
     },
     text1:{
         fontSize: 16,

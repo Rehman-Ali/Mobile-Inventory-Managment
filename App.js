@@ -34,6 +34,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
  import RootStackScreen from './screens/RootStackScreen';
 import { LOGIN_FAIL , LOGIN_SUCCESS} from './actions/types';
+import BestSellingReport from './screens/Reports/BestSellingReport';
 // import {login} from './components/context';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -68,6 +69,7 @@ const  reportStack =  () => {
   return (
     <Stack.Navigator initialRouteName="dailyreport" headerMode="none">
       <Stack.Screen name="dailyreport"   component={DailyReport} />
+      <Stack.Screen name="bestsellingReport"   component={BestSellingReport} />
       <Stack.Screen name="all" component={MyTabs} />
     </Stack.Navigator>
   );
