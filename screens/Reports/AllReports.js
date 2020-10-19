@@ -20,19 +20,16 @@ function DailyScreen() {
    <Text style={{paddingTop:20,paddingLeft:20,}}>Report History:</Text>
   <View style={{ alignContent: "flex-start", alignItems:'center'}}>
  
-  <LineChart
+  <BarChart
     data={{
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
+      labels: ["Sales", "Profit"],
+      // labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
       datasets: [
         {
           data: [
             Math.random() * 10,
             Math.random() * 5,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100,
-            Math.random() * 100
-          ]
+            ]
         }
       ]
     }}
