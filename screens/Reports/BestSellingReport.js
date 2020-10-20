@@ -1,4 +1,4 @@
-import React, { Component , useState} from 'react'
+import React, { Component , useState, useEffect} from 'react'
 import DatePicker from 'react-native-datepicker'
 
 import {
@@ -9,7 +9,8 @@ import {
     Dimensions,
   TouchableOpacity,
   ImageBackground,
-  Button, FlatList
+  Button, FlatList,
+  Image
   } from 'react-native';
 import Arrowicon from 'react-native-vector-icons/AntDesign';
 import img from '../../assets/profile.jpg';
@@ -17,6 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {SERVER_URL} from '../../utils/config';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
+import Arrowicons from 'react-native-vector-icons/FontAwesome5';
 
 const SLIDER_WIDTH = Dimensions.get('window').width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
@@ -24,11 +26,72 @@ const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 3) / 3.7);
 
 
 const BestSellingReport = ({navigation}) => {
-   const [date, setDate] = useState(new Date())
-  
+   const [sdate, setSDate] = useState(new Date())
+   const [edate, setEDate] = useState(new Date())
+   const [spinner, setSpinner] = useState(false);
+   const [token, setToken] = useState('');
+    
    const bestSellingGraphDate = useSelector(state => state.report.bestSellingGraph)
    const data = bestSellingGraphDate.report;
+   console.log('bestSellingGraphDate', bestSellingGraphDate);
+   console.log('sdate', sdate);
+   console.log('edate', edate);
    
+
+   const checkStorge = async () => {
+    try {
+      const value = await AsyncStorage.getItem('User');
+      console.log('valusse', JSON.parse(value));
+      let data = JSON.parse(value)
+      if (value !== null) {
+       
+        setToken(data.token);
+      }
+    } catch (error) {
+      console.log('catch err', error);
+    }
+  };
+
+   useEffect(() => {
+    checkStorge();
+   }, []);
+
+
+   const  loginHandle =(date) => {
+    setEDate(date)
+    setSpinner(true)
+ console.log('token', token)
+    fetch(`${SERVER_URL}api/report/best-selling`, {
+      method: 'POST',
+      headers: {
+          // 'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+      },
+      body:JSON.stringify({
+            sDate: sdate,
+            eDate: edate
+      })
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setSpinner(false);
+        dispatch({
+          type: GET_BESTSELLING_REPORT_SUCCESS,
+          payload: responseJson,
+        });
+      
+      })
+      .catch((error) => {
+        setSpinner(false);
+       
+        console.log('catchhh', error);
+      });
+
+    }
+      
+
+
    const renderItem = ({ item }) => {
    
     return (
@@ -52,8 +115,8 @@ const BestSellingReport = ({navigation}) => {
     {/* <Text>Rs{item.sold_price}</Text> */}
     {/* <Text style={{color: 'grey', fontSize: 12}}>Rs{item.price}</Text> */}
         </View>
-        <View style={styles.icon}>
-          <Arrowicon
+        <View style={styles.icons}>
+          <Arrowicons
             name="arrow-right"
             color="#ffff"
             style={{alignSelf: 'center', marginTop: '14%'}}
@@ -98,12 +161,12 @@ const BestSellingReport = ({navigation}) => {
           
       <DatePicker
         style={{width: 200}}
-        date={date}
+        date={sdate}
         mode="date"
         placeholder="select date"
         format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
+        // minDate="2020-05-01"
+        // maxDate="2016-06-01"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -118,22 +181,22 @@ const BestSellingReport = ({navigation}) => {
           }
           // ... You can check the source to find the other keys.
         }}
-        onDateChange={(date) => setDate(date)}
+        onDateChange={(date) => setSDate(date)}
       />
     </View>
     <View style={{flexDirection:'row', justifyContent:'space-around', alignItems: 'center', alignContent:'center', marginTop : '5%'}}>
       <View>
-          <Text style={styles.text1}>Start Date:</Text>
+          <Text style={styles.text1}>End Date:</Text>
           </View>
           
       <DatePicker
         style={{width: 200}}
-        date={date}
+        date={edate}
         mode="date"
         placeholder="select date"
         format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
+        // minDate="2016-05-01"
+        // maxDate="2016-06-01"
         confirmBtnText="Confirm"
         cancelBtnText="Cancel"
         customStyles={{
@@ -148,7 +211,7 @@ const BestSellingReport = ({navigation}) => {
           }
           // ... You can check the source to find the other keys.
         }}
-        onDateChange={(date) => setDate(date)}
+        onDateChange={(date) => loginHandle(date)}
       />
     </View>
     </View>
@@ -273,44 +336,6 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       marginTop: 15,
     },
-    imgg: {
-      height: ITEM_HEIGHT,
-      width: ITEM_WIDTH,
-      borderBottomLeftRadius: 25,
-      borderBottomRightRadius: 25,
-    },
-    mainDiv:{
-        height: '37%',
-        backgroundColor: '#2a62ff',
-        // marginTop: 10,
-        borderRadius:10,
-        width:"95%",
-        alignSelf:'center',
-        elevation:5,
-        opacity: 0.9
-    },
-    div1:{
-      height: '10%',
-      width: '42%',
-      backgroundColor: '#ffff',
-      borderRadius:10,
-      flexDirection:"column",
-      justifyContent:'center',
-      alignContent:'center',
-      alignItems:'center',
-      elevation: 7
-    },
-    div11:{
-        height: '30%',
-        width: '95%',
-        backgroundColor: '#2a62ff',
-        borderRadius:10,
-        flexDirection:"row",
-        justifyContent:'center',
-        alignContent:'center',
-        alignItems:'center',
-        elevation: 7
-      },
     text1:{
         fontSize: 16,
         fontWeight: "bold",
@@ -318,66 +343,55 @@ const styles = StyleSheet.create({
         color:'#fff'
         
     },
-    bar:{
-        marginTop: 10,
-        height: '100%',
-        backgroundColor : "#f9f9fb"
+    card: {
+      height: 30,
+      // backgroundColor: '#fff',
+      width: '95%',
+      marginTop: 20,
+      marginBottom: 20,
+      alignSelf: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
-    barText:{
-        paddingLeft: 15,
-        paddingTop:6
+    diiv1: {
+      height: '100%',
+      //  backgroundColor:'pink',
+      width: '70%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: 10,
     },
-    detail:{
-        flexDirection: "column",
-        marginTop: 10
-        // justifyContent:'space-around',
-        // alignContent:'center'
+    diiv2: {
+      height: '100%',
+      // backgroundColor:'yellow',
+      width: '25%',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
     },
-    detail1:{
-     height: 100,
-    //  backgroundColor:'red',
-     flexDirection:'row',
-     justifyContent : "space-around"
+    imgtext: {
+      marginLeft: '4%',
     },
-    detail2:{
-        height: 100,
-        backgroundColor:'black'
-       },
-       detailIn1:{
-           width: "40%",
-           backgroundColor: '#f9f9fb',
-           height:'90%',
-           elevation:3,
-           borderRadius:5
-       },
-       detailIn2:{
-        width: "40%",
-        backgroundColor: '#ffff',
-        height:'90%',
-        elevation:3,
-        borderRadius:5
+    icons: {
+      height: 17,
+      width: '20%',
+      backgroundColor: '#00c84e',
+      borderRadius: 25,
     },
-    meanurow: {
-        height: 100,
-        flexDirection: 'row',
-        marginTop: 25,
-      },
-      meanutext: {
-        justifyContent: 'center',
-        marginLeft: 25,
-        borderBottomWidth: 1,
-        width: '60%',
-        borderColor: '#A9A5A3',
-      },
-      logo:{
-          height : '40%',
-          width: '25%',
-          backgroundColor : 'red',
-          borderRadius: 200
-      },
-    qty: {
+    icon2: {
+      height: 17,
+      width: '20%',
+      backgroundColor: '#f34b40',
+      borderRadius: 25,
+    },
+    inner: {
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
 
-    }
+   
+
    
 
   });

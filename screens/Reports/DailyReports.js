@@ -60,6 +60,7 @@ const DailyReport = ({navigation}) => {
    
     const bestSellingGraphDate = useSelector(state => state.report.bestSellingGraph)
     const ProfitGraph = useSelector(state => state.report.ProfitGraph)
+    console.log('ProfitGraph', ProfitGraph)
   
     const checkStorge = async () => {
       try {
@@ -85,7 +86,7 @@ const DailyReport = ({navigation}) => {
       console.log('token', token);
      
       if(token !== undefined){
-        setInterval(() => {
+        // setInterval(() => {
           fetch(`${SERVER_URL}api/report/best-selling`, {
             method: 'POST',
             headers: {
@@ -159,7 +160,7 @@ const DailyReport = ({navigation}) => {
             // console.log('------selling', br )
             //   console.log('PROFT -----selling', ct )
              
-        }, 5000)
+        // }, 5000)
      
         }
       
@@ -262,13 +263,13 @@ const DailyReport = ({navigation}) => {
  
   <BarChart
     data={{
-      labels: [ "Nokia" ],
+      labels: [ "Sales", 'Profit' ],
       // labels: [ bestSellingGraphDate.brand ],
       // labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
       datasets: [
         {
           data: [
-              0, 1
+               `${ProfitGraph.sales}`, `${ProfitGraph.profit}`
             ]
         }
       ]
@@ -282,7 +283,7 @@ const DailyReport = ({navigation}) => {
       backgroundColor: "#e26a00",
       backgroundGradientFrom: "#2a62ff",
       backgroundGradientTo: "#2a62ff",
-      // decimalPlaces: 2, // optional, defaults to 2dp
+       decimalPlaces: 0, // optional, defaults to 2dp
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       style: {
@@ -297,7 +298,7 @@ const DailyReport = ({navigation}) => {
     bezier
     style={{
       marginVertical: 8,
-      borderRadius: 16
+      borderRadius: 8
     }}
   />
 </View>
@@ -309,21 +310,20 @@ const DailyReport = ({navigation}) => {
  
   <BarChart
     data={{
-      labels: ["Sales", "Profit"],
+      labels: ["",'Nokia'],
       // labels: ["Jan", "Feb", "Mar", "Apr", "May", "June"],
       datasets: [
         {
           data: [
-            Math.random() * 10,
-            Math.random() * 5,
+                 0,10
             ]
         }
       ]
     }}
     width={Dimensions.get("window").width/1.1} // from react-native
     height={220}
-    yAxisLabel="$"
-    yAxisSuffix="k"
+    // yAxisLabel="$"
+    // yAxisSuffix="k"
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
       backgroundColor: "#e26a00",
@@ -344,7 +344,7 @@ const DailyReport = ({navigation}) => {
     bezier
     style={{
       marginVertical: 8,
-      borderRadius: 16
+      borderRadius: 8
     }}
   />
 </View>
@@ -356,7 +356,7 @@ const DailyReport = ({navigation}) => {
           marginTop:40
           
         }}>
-          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('Sales')}>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('closingreport')}>
           <Icon 
             name="home-outline" 
             color="#2a62ff"
@@ -367,7 +367,7 @@ const DailyReport = ({navigation}) => {
           </Text>
           {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
           </TouchableOpacity>
-          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('report')} >
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('salesreport')} >
           <Icon 
             name="home-outline" 
             color="#2a62ff"
@@ -398,7 +398,7 @@ const DailyReport = ({navigation}) => {
           </Text>
           {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
           </TouchableOpacity>
-          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('bestsellingReport')} >
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('profitreport')} >
           <Icon 
             name="home-outline" 
             color="#2a62ff"
