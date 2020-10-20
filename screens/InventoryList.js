@@ -15,18 +15,19 @@ import {
 
 import Arrowicon from 'react-native-vector-icons/FontAwesome5';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import img from '../../assets/signup3.jpg';
-import {SERVER_URL} from '../../utils/config';
+import img from '../assets/signup3.jpg';
+import {SERVER_URL} from '../utils/config';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import {
   GET_SOLD_PRODUCT_FAIL,
   GET_SOLD_PRODUCT_SUCCESS,
-} from '../../actions/types';
-const ShopList = ({navigation}) => {
+} from '../actions/types';
+const InventoryList = ({navigation}) => {
   const [spinner, setSpinner] = useState(false);
   const [token, setToken] = useState();
+  const [data, setDate] = useState();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.sale.allproduct);
   console.log('product', product);
@@ -44,15 +45,15 @@ const ShopList = ({navigation}) => {
       console.log('catch err', error);
     }
   };
-
+  console.log('data', data);
   useEffect(() => {
     checkStorge();
-  }, []);
+  });
 
   useEffect(() => {
     setSpinner(true);
     console.log('token', token);
-    fetch(`${SERVER_URL}api/pos/`, {
+    fetch(`${SERVER_URL}api/inventory/get-all`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -62,11 +63,12 @@ const ShopList = ({navigation}) => {
       .then((response) => response.json())
       .then(async (responseJson) => {
         setSpinner(false);
-        dispatch({
-          type: GET_SOLD_PRODUCT_SUCCESS,
-          payload: responseJson.product,
-        });
-        console.log('then', responseJson);
+        setDate(responseJson.mobile_listing)
+        // dispatch({
+        //   type: GET_SOLD_PRODUCT_SUCCESS,
+        //   payload: responseJson.product,
+        // });
+        // console.log('then', responseJson);
       })
       .catch((error) => {
         // ToastAndroid.show('Incorrect Credcentials!', ToastAndroid.CENTER),
@@ -74,7 +76,7 @@ const ShopList = ({navigation}) => {
        
         console.log('catchhh', error);
       });
-  }, [token]);
+  }, [!token && data === undefined]);
   const screenHeight = Math.round(Dimensions.get('window').height) / 2;
  
   const renderItem = ({ item }) => {
@@ -82,7 +84,8 @@ const ShopList = ({navigation}) => {
     return (
       <TouchableOpacity      
       style={styles.card}
-      onPress={() => navigation.navigate('saleDetail', {item : item})}>
+    //   onPress={() => navigation.navigate('saleDetail', {item : item})}
+      >
       <View style={styles.diiv1}>
         <View style={styles.img}>
           <Image
@@ -91,23 +94,23 @@ const ShopList = ({navigation}) => {
           />
         </View>
         <View style={styles.imgtext}>
-    <Text style={{fontWeight: 'bold'}}>{item.model}</Text>
-    <Text style={{color: 'grey', fontSize: 12}}>{item.brand}</Text>
+    <Text style={{fontWeight: 'bold'}}>{item.brand}</Text>
+    <Text style={{color: 'grey', fontSize: 12}}>{item.model}</Text>
         </View>
       </View>
       <View style={styles.diiv2}>
         <View style={styles.inner}>
-    <Text>Rs{item.sold_price}</Text>
+       <Text>Color: {item.color}</Text>
     <Text style={{color: 'grey', fontSize: 12}}>Rs{item.price}</Text>
         </View>
-        <View style={styles.icon}>
+        {/* <View style={styles.icon}>
           <Arrowicon
             name="arrow-right"
             color="#ffff"
             style={{alignSelf: 'center', marginTop: '14%'}}
             size={10}
           />
-        </View>
+        </View> */}
       </View>
     </TouchableOpacity>
     );
@@ -253,7 +256,7 @@ const ShopList = ({navigation}) => {
               />
               <View style={{width: '85%', alignItems: 'center'}}>
                 <Text style={{fontWeight: 'bold', fontSize: 20, color: '#fff'}}>
-                  Sales
+                  Inventory List
                 </Text>
               </View>
 
@@ -261,7 +264,7 @@ const ShopList = ({navigation}) => {
               <View />
             </View>
           </View>
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <View style={styles.addButton}>
               <View style={styles.innerDiv}>
                 <Text style={styles.innertext}>0</Text>
@@ -277,7 +280,7 @@ const ShopList = ({navigation}) => {
                 <Text>Lose</Text>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
       </ImageBackground>
     
@@ -285,7 +288,7 @@ const ShopList = ({navigation}) => {
           <View>
           <FlatList
            style={styles.scrol}
-        data={product}
+        data={data}
         renderItem={renderItem}
         keyExtractor={item => item._id}
       />
@@ -690,11 +693,11 @@ const styles = StyleSheet.create({
   leftContainer: {
     flex: 1,
     backgroundColor: '#2a62ff',
-
+//    borderBottomEndRadius: 10,
     zIndex: 2,
   },
   rightContainer: {
-    flex: 4,
+    flex: 6,
     backgroundColor: '#fefeff',
 
     zIndex: 1,
@@ -742,7 +745,7 @@ const styles = StyleSheet.create({
   //   // backgroundColor: '#fbfbfb'
   // },
   scrol: {
-    marginTop: 70,
+    // marginTop: 70,
     height: '100%',
   },
   card: {
@@ -790,7 +793,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+   
   },
 });
 
-export default ShopList;
+export default InventoryList;

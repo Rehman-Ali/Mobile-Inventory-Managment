@@ -133,7 +133,7 @@ const ClosingReport = ({navigation}) => {
      <View style={styles.hbr}>
         <View style={styles.header}>
           <Arrowicon
-            onPress={() => navigation.navigate('HomeDrawer')}
+            onPress={() => navigation.goBack()}
             name="arrowleft"
             color="#fff"
             size={24}

@@ -97,7 +97,8 @@ const BestSellingReport = ({navigation}) => {
     return (
       <TouchableOpacity      
       style={styles.card}
-      onPress={() => navigation.navigate('saleDetail', {item : item})}>
+      // onPress={() => navigation.navigate('saleDetail', {item : item})}
+      >
       <View style={styles.diiv1}>
         <View style={styles.img}>
           <Image
@@ -135,7 +136,7 @@ const BestSellingReport = ({navigation}) => {
      <View style={styles.hbr}>
         <View style={styles.header}>
           <Arrowicon
-            onPress={() => navigation.navigate('HomeDrawer')}
+            onPress={() => navigation.goBack()}
             name="arrowleft"
             color="#fff"
             size={24}

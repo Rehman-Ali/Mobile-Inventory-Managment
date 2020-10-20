@@ -11,8 +11,10 @@ import {
   ImageBackground
   } from 'react-native';
 import Arrowicon from 'react-native-vector-icons/AntDesign';
+import Arrowicons from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import img from '../../assets/profile.jpg';
-import MyTabs from './AllReports';
 import {
   LineChart,
   BarChart,
@@ -22,7 +24,7 @@ import {
   StackedBarChart,
   
 } from "react-native-chart-kit";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {SERVER_URL} from '../../utils/config';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -49,6 +51,9 @@ const DailyReport = ({navigation}) => {
      const [bestSaleBrand, setBestSaleBrand] = useState([]);
      const [bestSaleBrandCount, setBestSaleBrandCount] = useState([]);
     
+    // const [sdateBestSale, setSDateBestSale] = useState(dtt);
+    const [saleNo, setSaleNo] = useState(0);
+    const [profitNo, setProfitNo] = useState(0);
     const [sdateBestSale, setSDateBestSale] = useState(dtt);
     const [edateProfit, setEDateProfit] = useState(dt);
     
@@ -60,8 +65,11 @@ const DailyReport = ({navigation}) => {
    
     const bestSellingGraphDate = useSelector(state => state.report.bestSellingGraph)
     const ProfitGraph = useSelector(state => state.report.ProfitGraph)
-    console.log('ProfitGraph', ProfitGraph)
-  
+    console.log('ProfitGraph', ProfitGraph.month_name)
+   if(ProfitGraph.month_name && profitNo == 0 && saleNo == 0 ){
+    setProfitNo(ProfitGraph.profit)
+    setSaleNo(ProfitGraph.sales)
+   }
     const checkStorge = async () => {
       try {
         const value = await AsyncStorage.getItem('User');
@@ -269,7 +277,9 @@ const DailyReport = ({navigation}) => {
       datasets: [
         {
           data: [
-               `${ProfitGraph.sales}`, `${ProfitGraph.profit}`
+              //  10, 100
+              saleNo, profitNo
+            //  `${ProfitGraph.sales}`, `${ProfitGraph.profit}`
             ]
         }
       ]
@@ -358,7 +368,7 @@ const DailyReport = ({navigation}) => {
         }}>
           <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('closingreport')}>
           <Icon 
-            name="home-outline" 
+            name="chart-bar" 
             color="#2a62ff"
             size={50}
           />
@@ -368,8 +378,8 @@ const DailyReport = ({navigation}) => {
           {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('salesreport')} >
-          <Icon 
-            name="home-outline" 
+          <Arrowicons 
+            name="chart-pie" 
             color="#2a62ff"
             size={50}
           />
@@ -388,8 +398,8 @@ const DailyReport = ({navigation}) => {
           
         }}>
           <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('bestsellingReport')}>
-          <Icon 
-            name="home-outline" 
+          <Arrowicons
+            name="chart-area" 
             color="#2a62ff"
             size={50}
           />
@@ -399,8 +409,8 @@ const DailyReport = ({navigation}) => {
           {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('profitreport')} >
-          <Icon 
-            name="home-outline" 
+          <Arrowicons 
+            name="chart-line" 
             color="#2a62ff"
             size={50}
           />

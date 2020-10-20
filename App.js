@@ -23,11 +23,11 @@ import ProductDetails from './screens/Sales/ProductDetails';
 import SalesList from './screens/Sales/SalesList';
 import ChangePassword from './screens/ChangePassword';
 import SignUp from './screens/Signup';
-import SupportScreen from './screens/SupportScreen';
+
 import SettingsScreen from './screens/SettingScreen';
-import BookMark from './screens/BookMark';
+
 import DailyReport from './screens/Reports/DailyReports';
-import MyTabs from './screens/Reports/AllReports';
+
 import Dashboard from './screens/Dashboard';
 import AsyncStorage from '@react-native-community/async-storage'
 import {useSelector, useDispatch} from 'react-redux';
@@ -38,6 +38,9 @@ import BestSellingReport from './screens/Reports/BestSellingReport';
 import ClosingReport from './screens/Reports/ClosingReport';
 import SalesReport from './screens/Reports/SalesReport';
 import ProfitReport from './screens/Reports/ProfitReport';
+import VendorList from './screens/VendorList';
+import EmployeeList from './screens/EmployeeList';
+import InventoryList from './screens/InventoryList';
 // import {login} from './components/context';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -76,11 +79,49 @@ const  reportStack =  () => {
       <Stack.Screen name="salesreport"   component={SalesReport} />
       <Stack.Screen name="profitreport"   component={ProfitReport} />
       <Stack.Screen name="bestsellingReport"   component={BestSellingReport} />
-      <Stack.Screen name="all" component={MyTabs} />
+ 
     </Stack.Navigator>
   );
 
   }
+
+  
+
+const  vendorStack =  () => {
+  return (
+    <Stack.Navigator initialRouteName="vendor-list" headerMode="none">
+      <Stack.Screen name="vendor-list"   component={VendorList} />
+    </Stack.Navigator>
+  );
+
+  }
+
+  
+const  empStack =  () => {
+  return (
+    <Stack.Navigator initialRouteName="emp-list" headerMode="none">
+      <Stack.Screen name="emp-list"   component={EmployeeList} />
+    </Stack.Navigator>
+  );
+
+  }
+  const  iventStack =  () => {
+    return (
+      <Stack.Navigator initialRouteName="inventory-list" headerMode="none">
+        <Stack.Screen name="inventory-list"   component={InventoryList} />
+      </Stack.Navigator>
+    );
+  
+    }
+
+    const  profileStack =  () => {
+      return (
+        <Stack.Navigator initialRouteName="profile" headerMode="none">
+          <Stack.Screen name="profile"   component={ProfileScreen} />
+        </Stack.Navigator>
+      );
+    
+      }
 
 const App = () => {
 
@@ -123,7 +164,10 @@ const App = () => {
           <Drawer.Screen name="HomeDrawer"  component={homeStack} />
           <Drawer.Screen name="Sales" component={salesStack} />
           <Drawer.Screen name="report" component={reportStack} />
-          <Drawer.Screen name="BookmarkScreen" component={BookMark} />
+          <Drawer.Screen name="vendor" component={vendorStack} />
+          <Drawer.Screen name="employee" component={empStack} />
+          <Drawer.Screen name="inventory" component={iventStack} />
+          <Drawer.Screen name="user-profile" component={profileStack} />
         </Drawer.Navigator>
        ) 
     :

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React , {useEffect , useState}from 'react';
+import { View, StyleSheet} from 'react-native';
 import {
     useTheme,
     Avatar,
@@ -24,11 +24,29 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export function DrawerContent(props) {
 
-    // const paperTheme = useTheme();
+   const dispatch = useDispatch();
+   const [user, setUser] = useState()
 
-    // const { signOut, toggleTheme } = React.useContext(AuthContext);
-     const dispatch = useDispatch();
+    const checkStorge = async () => {
+        try {
+          const value = await AsyncStorage.getItem('User');
+          console.log('valusse', JSON.parse(value));
+          let data = JSON.parse(value)
+          if (value !== null) {
+           
+            setUser(data);
+          }
+        } catch (error) {
+          console.log('catch err', error);
+        }
+      };
+    
+      useEffect(() => {
+        checkStorge();
+      }, []);
+    
 
+    
     const  Logout = async () => {
         try {
           await AsyncStorage.removeItem('User');
@@ -55,8 +73,8 @@ export function DrawerContent(props) {
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>Shop Name</Title>
-                                <Caption style={styles.caption}>@username</Caption>
+                            <Title style={styles.title}>{user !== undefined ? user.name : 'Hello'}</Title>
+                                <Caption style={styles.caption}>Welcome here!</Caption>
                             </View>
                         </View>
 
@@ -93,7 +111,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Sales"
-                            onPress={() => {props.navigation.navigate('Profile')}}
+                            onPress={() => {props.navigation.navigate('Sales')}}
                         />
                         <DrawerItem 
                             icon={() => (
@@ -104,7 +122,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Reports"
-                            onPress={() => {props.navigation.navigate('BookmarkScreen')}}
+                            onPress={() => {props.navigation.navigate('report')}}
                         />
                         {/* <DrawerItem 
                             icon={() => (
@@ -117,7 +135,7 @@ export function DrawerContent(props) {
                             label="Settings"
                             onPress={() => {props.navigation.navigate('SettingsScreen')}}
                         /> */}
-                        <DrawerItem 
+                        {/* <DrawerItem 
                             icon={() => (
                                 <Icon 
                                 name="account-check-outline" 
@@ -127,7 +145,7 @@ export function DrawerContent(props) {
                             )}
                             label="Profile"
                             onPress={() => {props.navigation.navigate('SupportScreen')}}
-                        />
+                        /> */}
                     </Drawer.Section>
                     <Drawer.Section title="Support">
                         <TouchableRipple>

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment, useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -12,9 +12,31 @@ import {
 } from 'react-native';
 import img from '../assets/profile.jpg';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Arrowicon from 'react-native-vector-icons/AntDesign';
 
 const ProfileScreen = ({navigation}) => {
   
+  const [user, setUser] = useState()
+
+  const checkStorge = async () => {
+      try {
+        const value = await AsyncStorage.getItem('User');
+        console.log('valusse', JSON.parse(value));
+        let data = JSON.parse(value)
+        if (value !== null) {
+         
+          setUser(data);
+        }
+      } catch (error) {
+        console.log('catch err', error);
+      }
+    };
+  
+    useEffect(() => {
+      checkStorge();
+    }, []);
+  
+
   return (
    
     <ScrollView style={styles.container}>
@@ -22,6 +44,7 @@ const ProfileScreen = ({navigation}) => {
       <View style={styles.headerDiv}>
         <ImageBackground source={img} style={styles.image}>
           <View style={styles.imgCon}>
+         
             <Icon
               name="person"
               style={styles.person}
@@ -30,7 +53,7 @@ const ProfileScreen = ({navigation}) => {
             />
           </View>
           <View>
-            <Text style={styles.text}>Welcome Saeed</Text>
+         <Text style={styles.text}>Welcome { user !== undefined ? user.name : ''}</Text>
           </View>
           <View style={styles.icons}>
             <Icon name="lock" style={styles.icon} color="white" />
@@ -60,7 +83,8 @@ const ProfileScreen = ({navigation}) => {
       </TouchableOpacity>
        <TouchableOpacity
         style={styles.loginDiv}
-        onPress={() => navigation.navigate('donationhistory')}>
+        // onPress={() => navigation.navigate('donationhistory')}
+        >
         <View style={styles.loginIcon}>
           <Icon
             name="vpn-key"
@@ -80,7 +104,8 @@ const ProfileScreen = ({navigation}) => {
       </View>
       <TouchableOpacity
         style={styles.allDiv}
-        onPress={() => navigation.navigate('aboutus')}>
+        // onPress={() => navigation.navigate('aboutus')}
+        >
         <View style={styles.loginIcon}>
           <Icon
             name="sentiment-very-satisfied"
@@ -97,7 +122,8 @@ const ProfileScreen = ({navigation}) => {
 
       <TouchableOpacity
         style={styles.allDiv}
-        onPress={() => navigation.navigate('contactus')}>
+        // onPress={() => navigation.navigate('contactus')}
+        >
         <View style={styles.loginIcon}>
           <Icon
             name="call"
@@ -129,6 +155,10 @@ const styles = StyleSheet.create({
     // backgroundColor: '#888',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  header:{
+    flexDirection: 'row',
+    alignContent : 'flex-start'
   },
   image: {
     height: 250,

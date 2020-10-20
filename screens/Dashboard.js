@@ -44,26 +44,26 @@ const ChangePassword = ({navigation}) => {
           
         }}>
           <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('Sales')}>
-          <Icon 
-            name="home-outline" 
+          <Arrowicon 
+            name="chart-pie" 
             color="#2a62ff"
             size={50}
           />
           <Text>
             Sales
           </Text>
-          <Text style={{color: '#2a62ff'}}>34</Text>
+          {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('report')} >
           <Icon 
-            name="home-outline" 
+            name="chart-bar" 
             color="#2a62ff"
             size={50}
           />
           <Text>
             Reports
           </Text>
-          <Text style={{color: '#2a62ff'}}>534</Text>
+          {/* <Text style={{color: '#2a62ff'}}>534</Text> */}
           </TouchableOpacity>
         
       </View>
@@ -74,9 +74,51 @@ const ChangePassword = ({navigation}) => {
           marginTop:15
           
         }}>
-          <TouchableOpacity style={styles.div1}>
-          <Icon 
-            name="home-outline" 
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('vendor')}>
+          <Arrowicon 
+            name="store-alt" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+            Vendors
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('employee')}>
+          <Arrowicon 
+            name="users" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+            Employee
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>24</Text> */}
+          </TouchableOpacity>
+        
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: "space-around",
+          marginTop:15
+          
+        }}>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('inventory')}>
+          <Arrowicon 
+            name="dolly-flatbed" 
+            color="#2a62ff"
+            size={50}
+          />
+          <Text>
+            Inventories
+          </Text>
+          {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.div1} onPress={() => navigation.navigate('user-profile')}>
+          <Arrowicon 
+            name="user-alt" 
             color="#2a62ff"
             size={50}
           />
@@ -84,48 +126,6 @@ const ChangePassword = ({navigation}) => {
             Profile
           </Text>
           {/* <Text style={{color: '#2a62ff'}}>34</Text> */}
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.div1}>
-          <Icon 
-            name="home-outline" 
-            color="#2a62ff"
-            size={50}
-          />
-          <Text>
-            Employee
-          </Text>
-          <Text style={{color: '#2a62ff'}}>24</Text>
-          </TouchableOpacity>
-        
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: "space-around",
-          marginTop:15
-          
-        }}>
-          <TouchableOpacity style={styles.div1}>
-          <Icon 
-            name="home-outline" 
-            color="#2a62ff"
-            size={50}
-          />
-          <Text>
-            Vendors
-          </Text>
-          <Text style={{color: '#2a62ff'}}>34</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.div1}>
-          <Icon 
-            name="home-outline" 
-            color="#2a62ff"
-            size={50}
-          />
-          <Text>
-            Sales
-          </Text>
-          <Text style={{color: '#2a62ff'}}>34</Text>
           </TouchableOpacity>
         
       </View>
